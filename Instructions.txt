@@ -1,0 +1,22 @@
+Pre-Required Softwares : 
+    Xampp apache
+    Visual Code
+    Laravel with composer
+    Github Account
+
+Initial Steps taken :
+    Installed a new laravel app
+        $ laravel new Tronion
+    Created a new repository in Github Account
+    Initialise git in project
+        $ git init
+    Connect to github and push commits
+        $ git remote add origin https://github.com/developer6969/Tronion.git
+        $ git push -u origin master
+
+Laravel 6.0 from scratch from laracast.com
+TOPIC|CLASS :-
+T1|C5. Basic routing & views
+T1|C6. Pass request data to views
+T1|C7. Route Wildcard
+T1|C8. Routing to Controller
