@@ -20,3 +20,45 @@ T1|C5. Basic routing & views
 T1|C6. Pass request data to views
 T1|C7. Route Wildcard
 T1|C8. Routing to Controller
+
+T2|C9. Setup a Database Connection
+T2|C10. Understanding Eloquent
+        $ php artisan make:model Post
+T3|C11. Migrations 
+        [For all available commands -> $ php artisan list]
+        $ php artisan make:migration create_posts_table
+        $ php artisan migrate
+        -- To add a new coloum in exiting table
+        $ php artisan make:migration add_title_to_posts_table
+        $ php artisan migrate
+        -- alternatively, update existing table migration and then
+        $ php artisan migrate:fresh
+T3|C12. Generate multiple files from single comand
+        $ php artisan make:model Category -mc (migration & controller)  
+        (Use -a for all -> Model, Factory, Migration, Seeder, Controller)
+T3|C13. Using model to perform business logic 
+        $ php artisan tinker (starts tinker)
+        Some Tinker commands :
+            >>> $category = new App\Category;
+            => App\Category {#3026}
+            >>> $category->name = 'Wordpress';
+            => "Wordpress"
+            >>> $category->save();
+            >>> App\Category::all();
+            >>> App\Category::first();
+            >>> App\Category::where('active', false)->get();
+            >>> App\Category::all();
+
+            $cat = App\Category::first();
+            => App\Category {#3035
+                 id: 1,
+                 name: "Wordpress",
+                 active: 1,
+                 created_at: "2020-05-01 11:03:48",
+                 updated_at: "2020-05-01 11:03:48",
+               }
+            >>> $cat->active();
+            => null
+            >>> $cat->inactive();
+            => null
+            >>>

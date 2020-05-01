@@ -10,6 +10,6 @@
     <h1>My Blog Post</h1>
 
     {{-- T1|C8 : Routing to Controller --}}
-    <p>{{ $postdata }}</p>
+    <p>{{ $post->body }}</p>
 </body>
 </html>
