@@ -28,18 +28,26 @@ Route::get('test', function () {
     return view('test');
 });
 
-// T1|C5 : Default route for homepage or welcome page
+// T3|C14 : Default route for homepage or welcome page
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.home');
+});
+
+Route::get('/about', function () {
+    return view('pages.about');
+});
+
+Route::get('/blog', function () {
+    return view('pages.blog');
 });
 
 // T1|C6 : Fetch some data from query string via route
 //      Also, send it to the view via route
 // http://127.0.0.1:8000/querydata?name=Jony+Decusa
-Route::get('/querydata', function() {
+Route::get('/querydata', function () {
     // Here $name means a variale creation
     $name = 'The username provided in querydata is "' . request('name') . '"';
-    
+
     // CASE A : Simply returning data directly from route
     // Here $name means we are returning variable value
     // return $name;
@@ -50,14 +58,12 @@ Route::get('/querydata', function() {
     return view('test', [
         'name' => $name
     ]);
-
-
 });
 
 // T1|C7 : Route Wildcard
 // 127.0.0.1:8000/posts/my-second-post
 // String after pagename will be available in $post variable in get function
-Route::get('/posts/{post}', function($post) {
+Route::get('/posts/{post}', function ($post) {
     // Demo database created for this specific use case
     $posts = [
         'my-first-post' => 'Hello , this is my first blog post',

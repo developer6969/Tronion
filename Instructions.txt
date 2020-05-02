@@ -24,7 +24,7 @@ T1|C8. Routing to Controller
 T2|C9. Setup a Database Connection
 T2|C10. Understanding Eloquent
         $ php artisan make:model Post
-T3|C11. Migrations 
+T2|C11. Migrations 
         [For all available commands -> $ php artisan list]
         $ php artisan make:migration create_posts_table
         $ php artisan migrate
@@ -33,10 +33,10 @@ T3|C11. Migrations
         $ php artisan migrate
         -- alternatively, update existing table migration and then
         $ php artisan migrate:fresh
-T3|C12. Generate multiple files from single comand
+T2|C12. Generate multiple files from single comand
         $ php artisan make:model Category -mc (migration & controller)  
         (Use -a for all -> Model, Factory, Migration, Seeder, Controller)
-T3|C13. Using model to perform business logic 
+T2|C13. Using model to perform business logic 
         $ php artisan tinker (starts tinker)
         Some Tinker commands :
             >>> $category = new App\Category;
@@ -61,4 +61,5 @@ T3|C13. Using model to perform business logic
             => null
             >>> $cat->inactive();
             => null
-            >>>
+T3|C14. View pages & components structure
+T3|C17. Assets Compilation (SASS)
