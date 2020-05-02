@@ -63,3 +63,18 @@ T2|C13. Using model to perform business logic
             => null
 T3|C14. View pages & components structure
 T3|C17. Assets Compilation (SASS)
+T4|C18. Dynamic data using Controllers
+        Added new data into database via tinker
+            $ php artisan tinker
+            Psy Shell v0.10.3 (PHP 7.3.9 — cli) by Justin Hileman
+            >>> $post = new App\Post;
+            => App\Post {#3032}
+            >>> $post->title = 'Becaming better then yourself';
+            => "Becaming better then yourself"
+            >>> $post->slug = 'becaming-better-then-yourself';
+            => "becaming-better-then-yourself"
+            >>> $post->extract = 'This is not going to be much deferent then so many';
+            => "This is not going to be much deferent then so many"
+            >>> $post->body = 'So here i started doing things all by self thought i need just a little help sometimes in some areas so keep this in mind that practise is the only way to master anything cause it train your brains to think in a particular manner';
+            => "So here i started doing things all by self thought i need just a little help sometimes in some areas so keep this in mind that practise is the only way to master anything cause it train your brains to think in a particular manner"
+            >>> $post->save();

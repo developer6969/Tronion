@@ -2,6 +2,6 @@
 
 @section('content')
     <div>
-        <h1>Lorem ipsum dolor sit amet consectetur </h1>
+        <img src="assets/home-screen.jpg" class="img-fluid" alt="Responsive image">
     </div>
 @endsection

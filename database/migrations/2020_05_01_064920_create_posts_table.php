@@ -17,7 +17,8 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('image');
+            $table->string('image')->default('blogpost.jpg');
+            $table->text('extract');
             $table->text('body');
             $table->timestamp('published_at')->nullable();
             $table->timestamps(); // createda_at & updated_at

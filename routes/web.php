@@ -28,7 +28,7 @@ Route::get('test', function () {
     return view('test');
 });
 
-// T3|C14 : Default route for homepage or welcome page
+// T2|C14 : Default route for homepage or welcome page
 Route::get('/', function () {
     return view('pages.home');
 });
@@ -85,3 +85,6 @@ Route::get('/posts/{post}', function ($post) {
 // This will override above route function
 // Transfering all computation from above route to controller
 Route::get('/posts/{post}', 'PostsController@show');
+
+// T4|C18 : Using Controller index method
+Route::get('/posts', 'PostsController@index');
