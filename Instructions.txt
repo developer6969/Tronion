@@ -78,3 +78,19 @@ T4|C18. Dynamic data using Controllers
             >>> $post->body = 'So here i started doing things all by self thought i need just a little help sometimes in some areas so keep this in mind that practise is the only way to master anything cause it train your brains to think in a particular manner';
             => "So here i started doing things all by self thought i need just a little help sometimes in some areas so keep this in mind that practise is the only way to master anything cause it train your brains to think in a particular manner"
             >>> $post->save();
+T4|C21. Controller with resources
+        Create a model first
+        $ php artisan make:model Post
+        Then create controller with resources & model binding
+        $ php artisan make:controller PostController --resource --model=Post
+
+        GET /videos          [List of resources]
+        GET /videos/create   [Show form for creating new resource]
+        POST /videos         [Persist new video to database]
+        GET /videos/:id      [Show a particular video]
+        GET /videos/:id/edit [Shpw form for editing existing resource]
+        PUT /videos/:id      [Persist the changes made above]
+        DELETE /videos/:id   [Delete resources ]
+
+        GET /videos/subscribe
+        POST /videos/subscriptions => VideoSubscriptionController@store

@@ -28,6 +28,9 @@
                 </a>
                 @endforeach
             </ul>
+            <div style="padding: 20px 0px">
+                <a class='btn btn-secondary' href="/posts/create">Create New Post</a>
+            </div> 
         </div>
     </div>
 </div>

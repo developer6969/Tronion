@@ -84,7 +84,9 @@ Route::get('/posts/{post}', function ($post) {
 // T1|C8 : Routing to Controller
 // This will override above route function
 // Transfering all computation from above route to controller
-Route::get('/posts/{post}', 'PostsController@show');
+Route::get('/posts/{post}', 'PostController@show');
 
 // T4|C18 : Using Controller index method
-Route::get('/posts', 'PostsController@index');
+Route::get('/posts', 'PostController@index');
+
+Route::get('/posts/create', 'PostController@create');
