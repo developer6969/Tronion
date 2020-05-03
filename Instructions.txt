@@ -94,3 +94,7 @@ T4|C21. Controller with resources
 
         GET /videos/subscribe
         POST /videos/subscriptions => VideoSubscriptionController@store
+T4|C23. Perform CRUD Operations via PostController
+        a. Create a route
+        b. Create a controller to handle route
+        c. Create a view to display what controller funnction returned

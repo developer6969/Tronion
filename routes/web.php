@@ -63,30 +63,37 @@ Route::get('/querydata', function () {
 // T1|C7 : Route Wildcard
 // 127.0.0.1:8000/posts/my-second-post
 // String after pagename will be available in $post variable in get function
-Route::get('/posts/{post}', function ($post) {
-    // Demo database created for this specific use case
-    $posts = [
-        'my-first-post' => 'Hello , this is my first blog post',
-        'my-second-post' => 'Now i am getting the hang of this blogging thing.'
-    ];
+// Route::get('/posts/{post}', function ($post) {
+//     // Demo database created for this specific use case
+//     $posts = [
+//         'my-first-post' => 'Hello , this is my first blog post',
+//         'my-second-post' => 'Now i am getting the hang of this blogging thing.'
+//     ];
 
-    // Handle Array key not found error (IndexOutOfBound)
-    // If whatever is in $post does'nt exit as key in $posts array
-    if (!array_key_exists($post, $posts)) {
-        abort(404, 'Sorry, that post was not found');
-    }
-    // else return view with value extracted from $posts array
-    return view('post', [
-        'postdata' => $posts[$post] ?? 'Nothing here yet.'
-    ]);
-});
+//     // Handle Array key not found error (IndexOutOfBound)
+//     // If whatever is in $post does'nt exit as key in $posts array
+//     if (!array_key_exists($post, $posts)) {
+//         abort(404, 'Sorry, that post was not found');
+//     }
+//     // else return view with value extracted from $posts array
+//     return view('post', [
+//         'postdata' => $posts[$post] ?? 'Nothing here yet.'
+//     ]);
+// });
+
+// T4|C18 : Using Controller index method
+Route::get('/posts', 'PostController@index')->name('posts.index');
+
+// T4|C23 : Create new post
+Route::post('/posts', 'PostController@store')->name('posts.store');
+Route::get('/posts/create', 'PostController@create')->name('posts.create');
 
 // T1|C8 : Routing to Controller
 // This will override above route function
 // Transfering all computation from above route to controller
-Route::get('/posts/{post}', 'PostController@show');
+Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 
-// T4|C18 : Using Controller index method
-Route::get('/posts', 'PostController@index');
-
-Route::get('/posts/create', 'PostController@create');
+//T4|C24 : Edit existing post
+Route::get('/posts/{post}/edit', 'PostController@edit')->name('posts.edit');
+Route::put('/posts/{post}', 'PostController@update')->name('posts.update');
+Route::delete('/posts/{post}', 'PostController@destroy')->name('posts.delete');

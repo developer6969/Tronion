@@ -26,33 +26,110 @@ class PostController extends Controller
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        //
+        // dump(request()->all());
+        $validatedAttributes = $this->validatePost();
+
+        // ONE WAY OF CREATING RESOURCE
+        // $post = new Post();
+        // $post->title = request('title');
+        // $post->slug = $this->slugify(request('title'));
+        // $post->extract = request('extract');
+        // $post->body = request('body');
+        // $post->image = 'blog_1.jpg';/*request('image');*/
+        // $post->published_at = now();
+        // $post->save();
+
+        // It creats mass assingment error
+        Post::create([
+            'title' => request('title'),
+            'slug' => $this->slugify(request('title')),
+            'extract' => request('title'),
+            'body' => request('title'),
+            'image' => 'blog_2.jpg',
+            'published_at' => now(),
+        ]);
+        
+        // OPTIONAL when no data manipulation is required 
+        // Post::create($validatedAttributes);
+
+        return redirect(route('posts.index'));
     }
 
     // Display the specified resource.
-    public function show($post)
+    // We override method in Model to get Post in params
+    public function show(Post $post)
     {
-        return view('posts.show', [
-            'post' => Post::where('slug', $post)->firstOrFail()
-        ]);
+        // Default way of doing things
+        // Post::where('slug', $post)->firstOrFail();
+        // Post::findOrFail($id);
+
+        return view('posts.show', ['post' => $post]);
     }
 
     // Show the form for editing the specified resource.
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post' => $post]);
     }
 
     // Update the specified resource in storage.
     public function update(Request $request, Post $post)
     {
-        //
+        $post->title = request('title');
+        $post->slug = $this->slugify(request('title'));
+        $post->extract = request('extract');
+        $post->body = request('body');
+        $post->image = 'blog_1.jpg';/*request('image');*/
+        $post->updated_at = now();
+        $post->save();
+
+        // return redirect('/posts/'. $post->slug);
+        // return redirect(route('posts.show', $post));
+        return redirect($post->path());
     }
 
     // Remove the specified resource from storage.
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect(route('posts.index'));
+
+    }
+
+    public static function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
+
+    public static function validatePost()
+    {
+        return request()->validate([
+            'title' => ['required', 'min:3', 'max:200'],
+            'extract' => 'required',
+            'body' => 'required'
+        ]);
     }
 }
 

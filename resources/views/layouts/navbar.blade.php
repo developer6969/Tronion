@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <ul class="navbar-nav ml-auto">
             <li><a class="nav-item nav-link {{ Request::path() === '/' ? 'active' : '' }}" href="/">Home</a></li>
-            <li><a class="nav-item nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/posts">Blog</a></li>
+            <li><a class="nav-item nav-link {{ Request::is('blog') ? 'active' : '' }}" href="{{ route('posts.index') }}">Blog</a></li>
             <li><a class="nav-item nav-link {{ Request::is('about') ? 'active' : '' }}" href="/about">About</a></li>
         </ul>
     </div>

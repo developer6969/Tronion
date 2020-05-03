@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('stylesheet')
+    <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}">
+@endsection
+
 @section('content')
 <div class="container" style="padding: 20px">
     <div class="row">
@@ -7,7 +11,9 @@
         <h4>Recent Blog Posts</h4>
             <ul class="list-group">
                 @foreach ($posts as $post)
-                <a href="/posts/{{ $post->slug }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                {{-- <a href="/posts/{{ $post->slug }}" --}}
+                {{-- <a href="{{ route('posts.show', $post) }}" --}}
+                <a href="{{ $post->path() }}" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ $post->title }}</h5>
                         <small>2 days ago</small>
@@ -29,7 +35,7 @@
                 @endforeach
             </ul>
             <div style="padding: 20px 0px">
-                <a class='btn btn-secondary' href="/posts/create">Create New Post</a>
+                <a class='btn btn-secondary' href="{{ route('posts.create') }}">Create New Post</a>
             </div> 
         </div>
     </div>
