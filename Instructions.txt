@@ -98,3 +98,26 @@ T4|C23. Perform CRUD Operations via PostController
         a. Create a route
         b. Create a controller to handle route
         c. Create a view to display what controller funnction returned
+T5|C34. Authentication
+        [IF NOT INSTALLED ALREADY]
+        $ composer require laravel/ui
+        $ php artisan ui vue --auth
+        Discover various ways to use & 
+        check authentication at ui level
+T5|C35. Password Reset Process
+        [.env mail log setting
+                MAIL_MAILER=log
+                MAIL_HOST=smtp.gmail.com
+                MAIL_PORT=465
+                MAIL_USERNAME=pg.091216@gmail.com
+                MAIL_PASSWORD=Rosterfrost#4862
+                MAIL_ENCRYPTION=TLS
+                MAIL_FROM_ADDRESS=pg.091216@gmail.com
+                MAIL_FROM_NAME="${APP_NAME}"
+        ]
+        1. Click 'Forget Password'
+        2. Fill out a form with their email address
+        3. Prepare a unique token and associate it with the user's Account
+        4. Send an email with an unique link back to our site that confirms email ownership
+        5. Link back to website, confirms the token, and set new password.
+        Check 'sample_mail' file for demo mail sent to user

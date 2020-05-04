@@ -100,4 +100,8 @@ Route::delete('/posts/{post}', 'PostController@destroy')->name('posts.delete');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+Route::get('/welcome', function(){
+    return view('welcome');
+});

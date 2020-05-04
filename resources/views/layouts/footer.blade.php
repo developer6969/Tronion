@@ -1,5 +1,5 @@
-<footer id="sticky-footer" class="pt-3 pb-1 bg-dark">
+<footer id="sticky-footer" class="pt-3 pb-1 bg-light">
     <div class="container text-center">
-      <p style="color: white">Copyright © Blogger.com</p>
+      <p>Copyright © Blogger.com</p>
     </div>
 </footer>
