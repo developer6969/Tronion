@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    /** AUTHORISATION LEVEL : None **/
+
     // Display a listing of the resource.
     public function index()
     {
@@ -15,44 +18,6 @@ class PostController extends Controller
             'categories' => Category::all(),
             'posts' => Post::latest('published_at')->get()
         ]);
-    }
-
-    // Show the form for creating a new resource.
-    public function create()
-    {
-        return view('posts.create');
-    }
-
-    // Store a newly created resource in storage.
-    public function store(Request $request)
-    {
-        // dump(request()->all());
-        $validatedAttributes = $this->validatePost();
-
-        // ONE WAY OF CREATING RESOURCE
-        // $post = new Post();
-        // $post->title = request('title');
-        // $post->slug = $this->slugify(request('title'));
-        // $post->extract = request('extract');
-        // $post->body = request('body');
-        // $post->image = 'blog_1.jpg';/*request('image');*/
-        // $post->published_at = now();
-        // $post->save();
-
-        // It creats mass assingment error
-        Post::create([
-            'title' => request('title'),
-            'slug' => $this->slugify(request('title')),
-            'extract' => request('title'),
-            'body' => request('title'),
-            'image' => 'blog_2.jpg',
-            'published_at' => now(),
-        ]);
-        
-        // OPTIONAL when no data manipulation is required 
-        // Post::create($validatedAttributes);
-
-        return redirect(route('posts.index'));
     }
 
     // Display the specified resource.
@@ -66,36 +31,111 @@ class PostController extends Controller
         return view('posts.show', ['post' => $post]);
     }
 
+    /** AUTHORISATION LEVEL : Registered User **/
+
+    // Show the form for creating a new resource.
+    public function create()
+    {
+        if (Auth::check()) {
+            return view('posts.create');
+        } else {
+            return redirect(route('posts.index'));
+        }
+    }
+
+    // Store a newly created resource in storage.
+    public function store(Request $request)
+    {
+        if (Auth::check()) {
+            // dump(request()->all());
+            $validatedAttributes = $this->validatePost();
+
+            // ONE WAY OF CREATING RESOURCE
+            // $post = new Post();
+            // $post->title = request('title');
+            // $post->slug = $this->slugify(request('title'));
+            // $post->extract = request('extract');
+            // $post->body = request('body');
+            // $post->image = 'blog_1.jpg';/*request('image');*/
+            // $post->published_at = now();
+            // $post->save();
+
+            // It creats mass assingment error
+            Post::create([
+                'title' => request('title'),
+                'slug' => $this->slugify(request('title')),
+                'extract' => request('extract'),
+                'body' => request('body'),
+                'image' => 'blog_2.jpg',
+                'published_at' => now(),
+                'user_id' => Auth::user()->id,
+            ]);
+            
+            // OPTIONAL when no data manipulation is required 
+            // Post::create($validatedAttributes);
+        }
+        return redirect(route('posts.index'));
+    }
+
+    /** AUTHORISATION LEVEL : Registered User with Author **/
+
     // Show the form for editing the specified resource.
     public function edit(Post $post)
     {
-        return view('posts.edit', ['post' => $post]);
+        if ($this->isUserTheAuthor($post->user_id)) {
+            // Allow to edit resource
+            return view('posts.edit', ['post' => $post]);
+        } else {
+            $this->redirectUnauthorisedUser($post);
+        }
     }
 
     // Update the specified resource in storage.
     public function update(Request $request, Post $post)
     {
-        $post->title = request('title');
-        $post->slug = $this->slugify(request('title'));
-        $post->extract = request('extract');
-        $post->body = request('body');
-        $post->image = 'blog_1.jpg';/*request('image');*/
-        $post->updated_at = now();
-        $post->save();
-
-        // return redirect('/posts/'. $post->slug);
-        // return redirect(route('posts.show', $post));
-        return redirect($post->path());
+        if ($this->isUserTheAuthor($post->user_id)) {
+            $post->title = request('title');
+            $post->slug = $this->slugify(request('title'));
+            $post->extract = request('extract');
+            $post->body = request('body');
+            $post->image = 'blog_1.jpg';/*request('image');*/
+            $post->updated_at = now();
+            $post->save();
+            // return redirect('/posts/'. $post->slug);
+            // return redirect(route('posts.show', $post));
+            return redirect($post->path());
+        } else {
+            $this->redirectUnauthorisedUser($post);
+        }
     }
 
     // Remove the specified resource from storage.
     public function destroy(Post $post)
     {
-        $post->delete();
-        return redirect(route('posts.index'));
-
+        if ($this->isUserTheAuthor($post->user_id)) {
+            $post->delete();
+            return redirect(route('posts.index'));
+        } else {
+            $this->redirectUnauthorisedUser($post);
+        }
     }
 
+    /** HELPER FUNCTIONS **/
+
+    // Verify wheather a given user IS the AUTHOR of given post
+    public static function isUserTheAuthor($user_id)
+    {
+        // Only the author can edit access from here
+        return (Auth::user()->id == $user_id);
+    }
+
+    // Redirect all users who are NOT AUTHOR of post
+    public static function redirectUnauthorisedUser($post)
+    {
+        return view('posts.show', ['post' => $post]);
+    }
+
+    // Takes title as param and return slugged version of that string
     public static function slugify($text)
     {
         // replace non letter or digits by -
@@ -122,7 +162,8 @@ class PostController extends Controller
 
         return $text;
     }
-
+    
+    // It validates all required conditions of a post
     public static function validatePost()
     {
         return request()->validate([

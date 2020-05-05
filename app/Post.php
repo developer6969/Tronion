@@ -20,4 +20,14 @@ class Post extends Model
     {
         return route('posts.show', $this);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    // ALTERNATIVILY USE CUSTOM KEY
+    // public function author()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id');
+    // }
 }

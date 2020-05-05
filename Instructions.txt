@@ -121,3 +121,28 @@ T5|C35. Password Reset Process
         4. Send an email with an unique link back to our site that confirms email ownership
         5. Link back to website, confirms the token, and set new password.
         Check 'sample_mail' file for demo mail sent to user
+T6|C29. Eloquent Model Relations
+                One To Many (User - Post)
+                Many To Many
+                Has One Through
+                Has Many Through
+                One To One (Polymorphic)
+                One To Many (Polymorphic)
+                Many To Many (Polymorphic)
+                STEPS:-
+                1. Add relation in User model
+                2. Add relation in Post model
+                3. Modify post migration to include user_id as coloum
+
+        How to use Factory:-
+                $ php artisan tinker
+                Single User :  factory(App\User::class)->create();
+                Multiple User :  factory(App\User::class, 5)->create();
+                Override Column :  factory(App\Post::class, 5)->create(['user_id' => 1]);
+        How to create new factory:-
+                $ php artisan make:factory PostFactory -m "App\Post"
+        Few Tinker commands :-
+                $user = App\User::find(1);
+                $user->posts;
+                OR
+                App\Post::find(1)->user;
