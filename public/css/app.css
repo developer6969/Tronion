@@ -10882,3 +10882,27 @@ a.text-dark:focus {
   }
 }
 
+.post-footer {
+  position: absolute;
+  bottom: 0;
+  width: 95%;
+  height: auto;
+  padding: 5px;
+}
+
+.show-only-one-line {
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
+}
+
+.show-only-two-lines {
+  height: 40px;
+  line-height: 20px;
+  overflow: hidden;
+}
+
+.mp-0 {
+  padding: 6px !important;
+}
+

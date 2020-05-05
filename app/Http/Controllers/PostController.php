@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    // It protects from unauthorised user to access the
+    // functions of this controller except 'index' & 'show'
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
+
     /** AUTHORISATION LEVEL : None **/
 
     // Display a listing of the resource.
@@ -36,44 +44,39 @@ class PostController extends Controller
     // Show the form for creating a new resource.
     public function create()
     {
-        if (Auth::check()) {
-            return view('posts.create');
-        } else {
-            return redirect(route('posts.index'));
-        }
+        return view('posts.create');
     }
 
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        if (Auth::check()) {
-            // dump(request()->all());
-            $validatedAttributes = $this->validatePost();
+        // dump(request()->all());
+        $validatedAttributes = $this->validatePost();
 
-            // ONE WAY OF CREATING RESOURCE
-            // $post = new Post();
-            // $post->title = request('title');
-            // $post->slug = $this->slugify(request('title'));
-            // $post->extract = request('extract');
-            // $post->body = request('body');
-            // $post->image = 'blog_1.jpg';/*request('image');*/
-            // $post->published_at = now();
-            // $post->save();
+        // ONE WAY OF CREATING RESOURCE
+        // $post = new Post();
+        // $post->title = request('title');
+        // $post->slug = $this->slugify(request('title'));
+        // $post->extract = request('extract');
+        // $post->body = request('body');
+        // $post->image = 'blog_1.jpg';/*request('image');*/
+        // $post->published_at = now();
+        // $post->save();
 
-            // It creats mass assingment error
-            Post::create([
-                'title' => request('title'),
-                'slug' => $this->slugify(request('title')),
-                'extract' => request('extract'),
-                'body' => request('body'),
-                'image' => 'blog_2.jpg',
-                'published_at' => now(),
-                'user_id' => Auth::user()->id,
-            ]);
-            
-            // OPTIONAL when no data manipulation is required 
-            // Post::create($validatedAttributes);
-        }
+        // It creats mass assingment error
+        Post::create([
+            'title' => request('title'),
+            'slug' => $this->slugify(request('title')),
+            'extract' => request('extract'),
+            'body' => request('body'),
+            'image' => 'blog_2.jpg',
+            'published_at' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        
+        // OPTIONAL when no data manipulation is required 
+        // Post::create($validatedAttributes);
+        
         return redirect(route('posts.index'));
     }
 
@@ -86,7 +89,8 @@ class PostController extends Controller
             // Allow to edit resource
             return view('posts.edit', ['post' => $post]);
         } else {
-            $this->redirectUnauthorisedUser($post);
+            // Reject & redirect
+            return view('posts.show', ['post' => $post]);
         }
     }
 
@@ -105,7 +109,7 @@ class PostController extends Controller
             // return redirect(route('posts.show', $post));
             return redirect($post->path());
         } else {
-            $this->redirectUnauthorisedUser($post);
+            return view('posts.show', ['post' => $post]);
         }
     }
 
@@ -116,7 +120,7 @@ class PostController extends Controller
             $post->delete();
             return redirect(route('posts.index'));
         } else {
-            $this->redirectUnauthorisedUser($post);
+            return view('posts.show', ['post' => $post]);
         }
     }
 
@@ -127,12 +131,6 @@ class PostController extends Controller
     {
         // Only the author can edit access from here
         return (Auth::user()->id == $user_id);
-    }
-
-    // Redirect all users who are NOT AUTHOR of post
-    public static function redirectUnauthorisedUser($post)
-    {
-        return view('posts.show', ['post' => $post]);
     }
 
     // Takes title as param and return slugged version of that string
